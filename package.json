@@ -9,7 +9,8 @@
     "migrate": "postgrator --config postgrator-config.js",
     "start": "node src/server.js",
     "predeploy": "npm audit",
-    "deploy": "git push heroku master"
+    "deploy": "git push heroku master",
+    "migrate-production": "postgrator --config postgrator-production-config.js"
   },
   "keywords": [],
   "author": "Tom `tomatao` HT <tomht@thinkful.com>",
