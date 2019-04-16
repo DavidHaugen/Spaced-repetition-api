@@ -30,6 +30,18 @@ const LanguageService = {
       )
       .where({ language_id });
   },
+
+  getNextWord(db, language_id, id){
+    return db
+      .from('word')
+      .select(
+        'original',
+        'language_id',
+        'correct_count',
+        'incorrect_count'
+      )
+      .where({id});
+  }
 };
 
 module.exports = LanguageService;
