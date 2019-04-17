@@ -130,4 +130,4 @@ function toArray(linkedList) {
   return result;
 }
 
-module.exports = {LinkedList, toArray}
+module.exports = {LinkedList, toArray, _Node}

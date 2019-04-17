@@ -2,7 +2,7 @@ const express = require('express')
 const LanguageService = require('./language-service')
 const { requireAuth } = require('../middleware/jwt-auth')
 const jsonParser = express.json()
-const {LinkedList, toArray} = require('../linked-list');
+const {LinkedList, toArray, _Node} = require('../linked-list');
 
 const languageRouter = express.Router()
 
@@ -86,8 +86,8 @@ languageRouter
       )
 
       const list = LanguageService.createLinkedList(words, head)
-      console.log(list.head.next.value)
-      console.log(toArray(list))
+      // console.log(list.head.next.value)
+      // console.log(toArray(list))
 
 //      If the answer was correct:
 //      Double the value of M
@@ -105,13 +105,62 @@ languageRouter
         list.head.value.correct_count ++;
         
         let curr = list.head
-        // while(memVal > 0){
-        //   current
-        // }
+        console.log(curr);
+        let countDown = newMemVal
+        while(countDown > 0 && curr.next !== null){
+          curr = curr.next
+          countDown--;
+        }
+        const temp = new _Node(list.head.value)
+
+        if(curr.next === null){
+          temp.next = curr.next
+          curr.next = temp
+          list.head = list.head.next
+          curr.value.next = temp.value.id
+          temp.value.next = null
+        } else {
+          temp.next = curr.next
+          curr.next = temp
+          list.head = list.head.next
+          curr.value.next = temp.value.id
+          temp.value.next = temp.next.value.id
+        }
+        req.language.total_score++
+        await LanguageService.updateWordsTable(
+          req.app.get('db'),
+          toArray(list),
+          req.language.id,
+          req.language.total_score
+        )
+        // run knex.update(find the item in the word table that has an i matching curr.value.id, and update all values to be curr)
+
         res.send('you got it right!')
       } else {
         list.head.value.memory_value = 1;
         list.head.value.incorrect_count ++;
+
+        let curr = list.head
+        let countDown = 1
+        while(countDown > 0){
+          curr = curr.next
+          countDown--;
+        }
+        
+        const temp = new _Node(list.head.value)
+        temp.next = curr.next
+        curr.next = temp
+        list.head = list.head.next
+        curr.value.next = temp.value.id
+        temp.value.next = temp.next.value.id
+
+        await LanguageService.updateWordsTable(
+          req.app.get('db'),
+          toArray(list),
+          req.language.id,
+          req.language.total_score
+        )
+
         res.send('nope');
       }
       next()

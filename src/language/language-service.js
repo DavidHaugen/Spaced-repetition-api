@@ -34,10 +34,6 @@ const LanguageService = {
       .where({ language_id });
   },
 
-  // getUserWords(db, language_id){
-
-  // }
-
   getNextWord(db, language_id){
     return db
       .from('word')
@@ -70,10 +66,6 @@ const LanguageService = {
       .where({language_id});
   },
 
-  getWord(db, language_id){
-    // 
-  },
-
   createLinkedList(words, head){
     const headObj = words.find(word => word.id === head);
     const headIndex = words.indexOf(headObj);
@@ -97,8 +89,32 @@ const LanguageService = {
       }
     }
     return list;
+  },
+
+  updateWordsTable(db, words, language_id, total_score){
+    return db.transaction(async trx =>{
+      return Promise.all([
+        trx('language')
+        .where({id: language_id})
+        .update({
+          total_score,
+          head: words[0].id
+        }),
+        ...words.map((word, i) => {
+          if(i + 1 >= words.length){
+            word.next = null;
+          } else {
+            word.next = words[i + 1].id;
+          }
+          return trx('word')
+            .where({id: word.id})
+            .update({
+              ...word
+            })
+        })
+      ])
+    })
   }
-  // createLinkedList()
 };
 
 module.exports = LanguageService;
