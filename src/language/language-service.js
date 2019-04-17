@@ -74,18 +74,28 @@ const LanguageService = {
     // 
   },
 
-  createLinkedList(db, language_id){
+  createLinkedList(words, head){
+    const headObj = words.find(word => word.id === head);
+    const headIndex = words.indexOf(headObj);
+    const headNode = words.splice(headIndex,1);
     const list = new LinkedList();
-    this.getLanguageHead(
-      db,
-      language_id
-    )
-      // .then(head => head[0].head)
-      .then(head => {list.insertAfter(head);console.log(list.head.value);});
-    // words.forEach(word => {
-    //   list.insertLast(word);
-    // });
-    
+    list.insertLast(headNode[0]);
+
+    let nextId = headNode[0].next;
+    let currentWord = words.find(word => word.id === nextId);
+    list.insertLast(currentWord);
+    nextId = currentWord.next;
+    currentWord = words.find(word => word.id === nextId);
+
+    while(currentWord !== null){
+      list.insertLast(currentWord);
+      nextId = currentWord.next;
+      if(nextId === null){
+        currentWord = null;
+      } else {
+        currentWord = words.find(word => word.id === nextId);
+      }
+    }
     return list;
   }
   // createLinkedList()

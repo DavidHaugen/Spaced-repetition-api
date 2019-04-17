@@ -2,6 +2,7 @@ const express = require('express')
 const LanguageService = require('./language-service')
 const { requireAuth } = require('../middleware/jwt-auth')
 const jsonParser = express.json()
+const {LinkedList, toArray} = require('../linked-list');
 
 const languageRouter = express.Router()
 
@@ -84,16 +85,33 @@ languageRouter
         req.language.id,
       )
 
-      console.log(head);
-      const list = await LanguageService.createLinkedList(req.app.get('db'), req.language.id);
-      // console.log(list.head.next.value)
+      const list = LanguageService.createLinkedList(words, head)
+      console.log(list.head.next.value)
+      console.log(toArray(list))
+
+//      If the answer was correct:
+//      Double the value of M
+//      Else, if the answer was wrong:
+//      Reset M to 1
+//      Move the question back M places in the list
+      
       const [checkNextWord] = await LanguageService.checkGuess(
         req.app.get('db'),
         req.language.id
       )
       if(checkNextWord.translation === guess){
+        const newMemVal = list.head.value.memory_value * 2;
+        list.head.value.memory_value = newMemVal;
+        list.head.value.correct_count ++;
+        
+        let curr = list.head
+        // while(memVal > 0){
+        //   current
+        // }
         res.send('you got it right!')
       } else {
+        list.head.value.memory_value = 1;
+        list.head.value.incorrect_count ++;
         res.send('nope');
       }
       next()
