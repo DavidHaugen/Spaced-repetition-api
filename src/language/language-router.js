@@ -105,7 +105,6 @@ languageRouter
         list.head.value.correct_count ++;
         
         let curr = list.head
-        console.log(curr);
         let countDown = newMemVal
         while(countDown > 0 && curr.next !== null){
           curr = curr.next
@@ -133,9 +132,22 @@ languageRouter
           req.language.id,
           req.language.total_score
         )
-        // run knex.update(find the item in the word table that has an i matching curr.value.id, and update all values to be curr)
-
-        res.send('you got it right!')
+        // {
+        //   nextWord: testLanguagesWords[1].original,
+        //   totalScore: 1,
+        //   wordCorrectCount: 0,
+        //   wordIncorrectCount: 0,
+        //   answer: testLanguagesWords[0].translation,
+        //   isCorrect: true
+        // }
+        res.json({
+          nextWord: list.head.value.original,
+          totalScore: req.language.total_score,
+          wordCorrectCount: list.head.value.correct_count,
+          wordIncorrectCount: list.head.value.incorrect_count,
+          answer: temp.value.translation,
+          isCorrect: true
+        })
       } else {
         list.head.value.memory_value = 1;
         list.head.value.incorrect_count ++;
@@ -160,8 +172,14 @@ languageRouter
           req.language.id,
           req.language.total_score
         )
-
-        res.send('nope');
+        res.json({
+          nextWord: list.head.value.original,
+          totalScore: req.language.total_score,
+          wordCorrectCount: list.head.value.correct_count,
+          wordIncorrectCount: list.head.value.incorrect_count,
+          answer: temp.value.translation,
+          isCorrect: false
+        });
       }
       next()
     }
