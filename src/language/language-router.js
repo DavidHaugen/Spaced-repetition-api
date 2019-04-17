@@ -85,16 +85,7 @@ languageRouter
         req.language.id,
       )
 
-      const list = LanguageService.createLinkedList(words, head)
-      // console.log(list.head.next.value)
-      // console.log(toArray(list))
-
-//      If the answer was correct:
-//      Double the value of M
-//      Else, if the answer was wrong:
-//      Reset M to 1
-//      Move the question back M places in the list
-      
+      const list = LanguageService.createLinkedList(words, head)      
       const [checkNextWord] = await LanguageService.checkGuess(
         req.app.get('db'),
         req.language.id
@@ -132,14 +123,6 @@ languageRouter
           req.language.id,
           req.language.total_score
         )
-        // {
-        //   nextWord: testLanguagesWords[1].original,
-        //   totalScore: 1,
-        //   wordCorrectCount: 0,
-        //   wordIncorrectCount: 0,
-        //   answer: testLanguagesWords[0].translation,
-        //   isCorrect: true
-        // }
         res.json({
           nextWord: list.head.value.original,
           totalScore: req.language.total_score,
