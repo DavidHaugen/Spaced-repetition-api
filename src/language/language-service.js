@@ -67,6 +67,7 @@ const LanguageService = {
   },
 
   createLinkedList(words, head){
+    // Using the array of words taken from the database, we find each consecutive word in the lsit based on either the head value (for the start of the list) or the next value of each word, inserting each word to the end of the list
     const headObj = words.find(word => word.id === head);
     const headIndex = words.indexOf(headObj);
     const headNode = words.splice(headIndex,1);
@@ -92,6 +93,7 @@ const LanguageService = {
   },
 
   updateWordsTable(db, words, language_id, total_score){
+    // create a single transaction to ensure that none of our changes are persisted if there is an error
     return db.transaction(async trx =>{
       return Promise.all([
         trx('language')
@@ -100,6 +102,7 @@ const LanguageService = {
           total_score,
           head: words[0].id
         }),
+        // Map over our words array (which has been updated to match our list), creating a knex transaction to update each word in the array 
         ...words.map((word, i) => {
           if(i + 1 >= words.length){
             word.next = null;
