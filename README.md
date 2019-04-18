@@ -1,51 +1,29 @@
-# Spaced repetition API!
+# Spaced Repetition Capstone
 
-## Local dev setup
+The spaced repetition technique lets users focus on the words that give them the most trouble. 
+This app tracks tracks user answers over time, revisiting words they answer incorrectly. 
+Words that users get right are revisited less and less frequently as users master them. 
 
-If using user `dunder-mifflin`:
+- [Live URL](https://spaced-repetition.now.sh)
+- [Client repo](https://github.com/thinkful-ei-armadillo/Andre-David-spaced-repetition-client)
+- [Server repo](https://github.com/thinkful-ei-armadillo/Andre-David-spaced-repetition-api)
 
-```bash
-mv example.env .env
-createdb -U dunder-mifflin spaced-repetition
-createdb -U dunder-mifflin spaced-repetition-test
-```
+This project was created by [David Haugen](https://github.com/DavidHaugen) and [Andre Willie](https://github.com/andre-kw). 
 
-If your `dunder-mifflin` user has a password be sure to set it in `.env` for all appropriate fields. Or if using a different user, update appropriately.
+#### Stack
+##### Front-end technologies
+React, React Context API, React Router, HTML, CSS, JavaScript
 
-```bash
-npm install
-npm run migrate
-env MIGRATION_DB_NAME=spaced-repetition-test npm run migrate
-```
+##### Server technologies
+Node.js, Express
 
-And `npm test` should work at this point
+##### Data persistence
+PostgreSQL
 
-## Configuring Postgres
+##### Testing environments
+Cypress
+Mocha
 
-For tests involving time to run properly, configure your Postgres database to run in the UTC timezone.
-
-1. Locate the `postgresql.conf` file for your Postgres installation.
-   1. E.g. for an OS X, Homebrew install: `/usr/local/var/postgres/postgresql.conf`
-   2. E.g. on Windows, _maybe_: `C:\Program Files\PostgreSQL\11.2\data\postgresql.conf`
-2. Find the `timezone` line and set it to `UTC`:
-
-```conf
-# - Locale and Formatting -
-
-datestyle = 'iso, mdy'
-#intervalstyle = 'postgres'
-timezone = 'UTC'
-#timezone_abbreviations = 'Default'     # Select the set of available time zone
-```
-
-## Scripts
-
-Start the application `npm start`
-
-Start nodemon for the application `npm run dev`
-
-Run the tests mode `npm test`
-
-Run the migrations up `npm run migrate`
-
-Run the migrations down `npm run migrate -- 0`
+##### Hosting
+Client: Now
+Server/Database: Heroku
