@@ -1,4 +1,4 @@
-# Spaced Repetition Capstone
+# Spaced Repetition
 
 The spaced repetition technique lets users focus on the words that give them the most trouble. 
 This app tracks tracks user answers over time, revisiting words they answer incorrectly. 
