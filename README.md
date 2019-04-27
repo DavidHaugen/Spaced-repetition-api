@@ -1,6 +1,6 @@
 # Spaced Repetition
 
-The spaced repetition technique lets users focus on the words that give them the most trouble. 
+The spaced repetition technique helps users learn a new language by focusing on the words that give them the most trouble. 
 This app tracks tracks user answers over time, revisiting words they answer incorrectly. 
 Words that users get right are revisited less and less frequently as users master them. 
 
